@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  userId    String    @unique @map("user_id")
+  name      String?   @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  sessions  Session[]
+  addresses Address[]
+  orders    Order[]
+  wishlists Wishlist[]
+  reviews   Review[]
+
+  @@map("users")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique @map("session_token") @db.VarChar(255)
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [userId])
+
+  @@map("sessions")
+}
+
+model Address {
+  id           Int      @id @default(autoincrement())
+  userId       String   @map("user_id")
+  name         String   @db.VarChar(255)
+  addressLine1 String   @map("address_line1") @db.VarChar(255)
+  addressLine2 String?  @map("address_line2") @db.VarChar(255)
+  city         String   @db.VarChar(255)
+  state        String   @db.VarChar(255)
+  postalCode   String   @map("postal_code") @db.VarChar(20)
+  country      String   @db.VarChar(255)
+  phone        String?  @db.VarChar(50)
+  isDefault    Boolean  @default(false) @map("is_default")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+  user         User     @relation(fields: [userId], references: [userId])
+
+  @@map("addresses")
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  productId String   @map("product_id") @db.VarChar(255)
+  variantId String?  @map("variant_id") @db.VarChar(255)
+  addedAt   DateTime @default(now()) @map("added_at")
+  user      User     @relation(fields: [userId], references: [userId])
+
+  @@map("wishlists")
+}
+
+model Order {
+  id                  Int         @id @default(autoincrement())
+  orderId             String      @unique @map("order_id") @db.VarChar(255)
+  userId              String      @map("user_id")
+  shopifyOrderId      String?     @map("shopify_order_id") @db.VarChar(255)
+  total               Int
+  status              String      @db.VarChar(50)
+  shippingAddressId   Int?        @map("shipping_address_id")
+  billingAddressId    Int?        @map("billing_address_id")
+  shippingCarrier     String?     @map("shipping_carrier") @db.VarChar(100)
+  shippingCost        Int?        @map("shipping_cost")
+  shippingName        String?     @map("shipping_name") @db.VarChar(255)
+  shippingAddressLine1 String?    @map("shipping_address_line1") @db.VarChar(255)
+  shippingAddressLine2 String?    @map("shipping_address_line2") @db.VarChar(255)
+  shippingCity        String?     @map("shipping_city") @db.VarChar(255)
+  shippingState       String?     @map("shipping_state") @db.VarChar(255)
+  shippingPostalCode  String?     @map("shipping_postal_code") @db.VarChar(20)
+  shippingCountry     String?     @map("shipping_country") @db.VarChar(255)
+  shippingPhone       String?     @map("shipping_phone") @db.VarChar(50)
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @default(now()) @map("updated_at")
+  user                User        @relation(fields: [userId], references: [userId])
+  items               OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   String  @map("order_id") @db.VarChar(255)
+  productId String  @map("product_id") @db.VarChar(255)
+  variantId String  @map("variant_id") @db.VarChar(255)
+  title     String  @db.VarChar(255)
+  quantity  Int
+  price     Int
+  image     String? @db.VarChar(255)
+  order     Order   @relation(fields: [orderId], references: [orderId])
+
+  @@map("order_items")
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  userId     String   @map("user_id")
+  productId  String   @map("product_id") @db.VarChar(255)
+  rating     Int
+  title      String?  @db.VarChar(255)
+  content    String?  @db.Text
+  isVerified Boolean  @default(false) @map("is_verified")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+  user       User     @relation(fields: [userId], references: [userId])
+
+  @@map("reviews")
+}
