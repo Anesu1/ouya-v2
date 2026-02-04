@@ -1,5 +1,8 @@
 import { getCollectionSlugsForSitemap, getProductSlugsForSitemap } from "@/lib/sanity"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 3600
+
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ouyaoenda.com"
 

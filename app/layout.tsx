@@ -12,7 +12,12 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Ouya Commerce",
   description: "Premium fragrance e-commerce platform",
-  
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ??
+      process.env.NEXTAUTH_URL ??
+      "https://ouyaoenda.com"
+  ),
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
