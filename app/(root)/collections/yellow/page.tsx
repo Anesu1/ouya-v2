@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic"
-
 import { getProductsByCollectionForGrid } from "@/lib/sanity"
 import ProductGrid from "@/components/products/product-grid"
 import EmptyCollection from "@/components/empty-collection"
