@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Ouya Commerce",
   description: "Premium fragrance e-commerce platform",
-    generator: 'v0.dev'
+  
 }
 
 export default function RootLayout({

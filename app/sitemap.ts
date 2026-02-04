@@ -1,10 +1,10 @@
-import { getAllProducts, getCollections } from "@/lib/sanity"
+import { getCollectionSlugsForSitemap, getProductSlugsForSitemap } from "@/lib/sanity"
 
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ouyaoenda.com"
 
-  // Get all products from Sanity
-  const products = await getAllProducts()
+  // Get lightweight product slugs from Sanity
+  const products = await getProductSlugsForSitemap()
   const productUrls = products.map((product) => {
     // Determine product type for better changefreq and priority
     const productType =
@@ -15,21 +15,21 @@ export default async function sitemap() {
 
     return {
       url: `${baseUrl}/products/${product.handle?.current || product.handle}`,
-      lastModified: new Date(product.updatedAt || product._updatedAt || product.createdAt || new Date()),
+      lastModified: new Date(product.updatedAt || product.createdAt || new Date()),
       changeFrequency: isFeatured ? "daily" : "weekly",
       priority: isFeatured ? 0.9 : 0.8,
     }
   })
 
-  // Get all collections from Sanity
-  const collections = await getCollections()
+  // Get lightweight collection slugs from Sanity
+  const collections = await getCollectionSlugsForSitemap()
   const collectionUrls = collections.map((collection) => {
     // Main collections get higher priority
     const isMainCollection = ["all", "candles", "diffusers", "bestsellers", "new"].includes(collection.handle)
 
     return {
       url: `${baseUrl}/collections/${collection.handle}`,
-      lastModified: new Date(collection.updatedAt || collection._updatedAt || new Date()),
+      lastModified: new Date(collection.updatedAt || new Date()),
       changeFrequency: isMainCollection ? "daily" : "weekly",
       priority: isMainCollection ? 0.9 : 0.7,
     }

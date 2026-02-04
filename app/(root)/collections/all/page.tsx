@@ -1,4 +1,4 @@
-import { getAllCollections, getAllProducts } from "@/lib/sanity"
+import { getAllCollections, getAllProductsForGrid } from "@/lib/sanity"
 import type { Metadata } from "next"
 import ProductGrid from "@/components/products/product-grid"
 
@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: "Explore our collection of premium handcrafted candles",
 }
 
-export const revalidate = 10 // Revalidate every 60 seconds
+export const revalidate = 10 // Revalidate every 10 seconds
 
 export default async function AllProductsPage() {
   // Fetch all products
-  const products = await getAllProducts()
+  const products = await getAllProductsForGrid()
   const content = await getAllCollections()
 
   if (!products) {

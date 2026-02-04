@@ -287,6 +287,60 @@ export async function getAllProducts() {
   `)
 }
 
+// Lightweight product list for grid pages
+export async function getAllProductsForGrid() {
+  return await sanityClient.fetch(`
+    *[_type == "product"] {
+      _id,
+      title,
+      "handle": handle,
+      price,
+      compareAtPrice,
+      "featuredImage": images[0].asset->url,
+      images[] {
+        "url": asset->url,
+        "altText": alt
+      },
+      variants[] {
+        _key,
+        title,
+        price,
+        compareAtPrice,
+        inStock
+      },
+      collections[]->{
+        "handle": slug.current
+      },
+      fragranceNotes[]
+    }
+  `)
+}
+
+// Lightweight product list for sitemap generation
+export async function getProductSlugsForSitemap() {
+  return await sanityClient.fetch(`
+    *[_type == "product"] {
+      "handle": handle.current,
+      "updatedAt": coalesce(updatedAt, _updatedAt, _createdAt),
+      "createdAt": _createdAt,
+      productType,
+      title,
+      featured,
+      isNew
+    }
+  `)
+}
+
+// Lightweight collection list for sitemap generation
+export async function getCollectionSlugsForSitemap() {
+  return await sanityClient.fetch(`
+    *[_type == "collection"] {
+      "handle": slug.current,
+      "updatedAt": coalesce(updatedAt, _updatedAt)
+    }
+  `)
+}
+
 export async function searchProducts(searchTerm: string) {
   const term = `*${searchTerm.toLowerCase()}*`
 
