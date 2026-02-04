@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description: "Explore our collection of premium handcrafted candles",
 }
 
+export const dynamic = "force-dynamic"
 export const revalidate = 10 // Revalidate every 10 seconds
 
 export default async function AllProductsPage() {
