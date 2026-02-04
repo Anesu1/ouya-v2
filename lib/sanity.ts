@@ -214,6 +214,80 @@ export async function getProductsByCollection(collectionSlug: string) {
   )
 }
 
+// Lightweight collection query for grid pages
+export async function getCollectionForGrid(collectionSlug: string) {
+  return await sanityClient.fetch(
+    `
+    *[_type == "collection" && slug.current == $collectionSlug][0] {
+      title,
+      description,
+      "image": image.asset->url,
+      "featuredImage": featuredImage.asset->url,
+      "products": *[_type == "product" && references(^._id)] {
+        _id,
+        title,
+        handle,
+        price,
+        compareAtPrice,
+        "featuredImage": images[0].asset->url,
+        images[] {
+          "url": asset->url,
+          "altText": alt
+        },
+        variants[] {
+          _key,
+          title,
+          price,
+          compareAtPrice,
+          inStock
+        },
+        collections[]->{
+          "handle": slug.current
+        },
+        fragranceNotes[]
+      }
+    }
+    `,
+    { collectionSlug },
+  )
+}
+
+// Lightweight products-by-collection for static collection pages
+export async function getProductsByCollectionForGrid(collectionSlug: string) {
+  return await sanityClient.fetch(
+    `
+    *[_type == "collection" && slug.current == $collectionSlug][0] {
+      title,
+      description,
+      "products": *[_type == "product" && references(^._id)] {
+        _id,
+        title,
+        handle,
+        price,
+        compareAtPrice,
+        "featuredImage": images[0].asset->url,
+        images[] {
+          "url": asset->url,
+          "altText": alt
+        },
+        variants[] {
+          _key,
+          title,
+          price,
+          compareAtPrice,
+          inStock
+        },
+        collections[]->{
+          "handle": slug.current
+        },
+        fragranceNotes[]
+      }
+    }
+    `,
+    { collectionSlug },
+  )
+}
+
 // Fetch homepage content
 export async function getHomepageContent() {
   return await sanityClient.fetch(`

@@ -1,11 +1,13 @@
 export const dynamic = "force-dynamic"
 
-import { getProductsByCollection } from "@/lib/sanity"
+import { getProductsByCollectionForGrid } from "@/lib/sanity"
 import ProductGrid from "@/components/products/product-grid"
 import EmptyCollection from "@/components/empty-collection"
 
+export const dynamic = "force-dynamic"
+
 export default async function RedCollectionPage() {
-  const collection = await getProductsByCollection("yellow-collection")
+  const collection = await getProductsByCollectionForGrid("yellow-collection")
 
   if (!collection) {
     return <EmptyCollection collectionName="Yellow Collection" />

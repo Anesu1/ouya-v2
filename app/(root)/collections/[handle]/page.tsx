@@ -1,4 +1,4 @@
-import { getCollection } from "@/lib/sanity"
+import { getCollectionForGrid } from "@/lib/sanity"
 import ProductGrid from "@/components/products/product-grid"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -11,8 +11,10 @@ interface CollectionPageProps {
   }
 }
 
+export const dynamic = "force-dynamic"
+
 export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
-  const collection = await getCollection(params.handle)
+  const collection = await getCollectionForGrid(params.handle)
 
   if (!collection) {
     return {
@@ -47,7 +49,7 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
 }
 
 export default async function CollectionPage({ params }: CollectionPageProps) {
-  const collection = await getCollection(params.handle)
+  const collection = await getCollectionForGrid(params.handle)
 
   if (!collection) {
     notFound()
