@@ -1,6 +1,7 @@
 import { getAllCollections, getAllProductsForGrid } from "@/lib/sanity"
 import type { Metadata } from "next"
 import ProductGrid from "@/components/products/product-grid"
+import ShopifyCollectionEmbed from "@/components/shopify/collection-embed"
 
 export const metadata: Metadata = {
   title: "All Candles | Ouya Oenda",
@@ -46,6 +47,10 @@ export default async function AllProductsPage() {
           <p className="text-gray-500">No products available at the moment. Please check back later.</p>
         </div>
       )}
+
+      <div className="mt-16">
+        <ShopifyCollectionEmbed />
+      </div>
     </div>
   )
 }

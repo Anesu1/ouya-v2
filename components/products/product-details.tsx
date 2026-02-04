@@ -464,15 +464,17 @@ export default function ProductDetails({ product }: { product: any }) {
             <div className="flex items-center">
               <Truck className="h-5 w-5 text-gray-500 mr-3" />
               <div>
-                <p className="text-sm font-medium">Free delivery by Apr 16 - Apr 17</p>
-                <p className="text-xs text-gray-500">Express delivery available</p>
+                <p className="text-sm font-medium">
+                  {product.deliveryMessage || "Free delivery by Apr 16 - Apr 17"}
+                </p>
+                <p className="text-xs text-gray-500">{product.deliverySubtext || "Express delivery available"}</p>
               </div>
             </div>
             <div className="flex items-center">
               <Shield className="h-5 w-5 text-gray-500 mr-3" />
               <div>
-                <p className="text-sm font-medium">Free 30-day returns</p>
-                <p className="text-xs text-gray-500">1-year warranty</p>
+                <p className="text-sm font-medium">{product.returnsMessage || "Free 30-day returns"}</p>
+                <p className="text-xs text-gray-500">{product.returnsSubtext || "1-year warranty"}</p>
               </div>
             </div>
           </motion.div>

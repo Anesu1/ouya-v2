@@ -99,6 +99,10 @@ export async function getProduct(handle: string) {
       dimensions,
       productDetails,
       shippinhInfo,
+      deliveryMessage,
+      deliverySubtext,
+      returnsMessage,
+      returnsSubtext,
       careInstructions,
       sustainability,
       "relatedProducts": *[_type == "product" && _id != ^._id && count((collections[]->slug.current)[@ in ^.collections[]->slug.current]) > 0][0...4] {

@@ -178,5 +178,29 @@ export const productType = defineType({
       type: "string",
       description: "Text for sustainability badge, if applicable",
     }),
+    defineField({
+      name: "deliveryMessage",
+      title: "Delivery Message",
+      type: "string",
+      description: "e.g., 'Free delivery by Apr 16 - Apr 17'",
+    }),
+    defineField({
+      name: "deliverySubtext",
+      title: "Delivery Subtext",
+      type: "string",
+      description: "e.g., 'Express delivery available'",
+    }),
+    defineField({
+      name: "returnsMessage",
+      title: "Returns Message",
+      type: "string",
+      description: "e.g., 'Free 30-day returns'",
+    }),
+    defineField({
+      name: "returnsSubtext",
+      title: "Returns Subtext",
+      type: "string",
+      description: "e.g., '1-year warranty'",
+    }),
   ],
 })
