@@ -3,6 +3,8 @@ import Header from "@/components/layout/header"
 import NotificationBanner from "@/components/layout/notification-banner"
 import type React from "react"
 
+export const dynamic = "force-dynamic"
+
 export default function layout({
   children,
 }: {
