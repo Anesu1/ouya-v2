@@ -2,7 +2,7 @@ import { getProductsByCollectionForGrid } from "@/lib/sanity"
 import ProductGrid from "@/components/products/product-grid"
 import EmptyCollection from "@/components/empty-collection"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 3600
 
 export default async function RedCollectionPage() {
   const collection = await getProductsByCollectionForGrid("red-collection")

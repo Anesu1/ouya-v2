@@ -11,7 +11,7 @@ interface CollectionPageProps {
   }
 }
 
-export const dynamic = "force-dynamic"
+export const revalidate = 3600
 
 export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
   const collection = await getCollectionForGrid(params.handle)

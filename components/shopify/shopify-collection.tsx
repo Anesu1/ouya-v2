@@ -190,19 +190,11 @@ export default function ShopifyCollection({
     }
   }, [collectionId, domain, storefrontAccessToken, moneyFormat]);
 
+  const containerId = `collection-component-${collectionId}`;
+
   return (
-    
-      <div className="mb-12">
-        <h2 className="text-2xl font-light tracking-tight text-gray-900 mb-6">
-          Featured Collection
-        </h2>
-        <ShopifyCollection
-          collectionId="677459460441"
-          domain="i2zhw1-yp.myshopify.com"
-          storefrontAccessToken="d60527deb542a695bb1fb4f7db838dcc"
-          moneyFormat="%C2%A3%7B%7Bamount%7D%7D"
-          className="min-h-[400px]"
-        />
-      </div>
+    <div className={className}>
+      <div id={containerId}></div>
+    </div>
   );
 }

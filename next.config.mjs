@@ -10,28 +10,37 @@ const nextConfig = {
     unoptimized: true,
     domains: ['cdn.sanity.io'],
   },
+  // These packages are server-only — don't bundle them with webpack,
+  // load them from node_modules at runtime instead.
+  serverExternalPackages: [
+    '@prisma/client',
+    'prisma',
+    'bcryptjs',
+    'nodemailer',
+    'stripe',
+    'resend',
+    '@mailchimp/mailchimp_marketing',
+  ],
   experimental: {
-    // Updated experimental features configuration
     serverActions: {
       allowedOrigins: ['localhost:3000']
-    }
-    // Removed serverExternalPackages as it's not recognized in Next.js 15.2.4
+    },
+    cpus: 1,
+    workerThreads: false,
+    webpackMemoryOptimizations: true,
+    // Only import what's actually used from these large packages
+    optimizePackageImports: ['lucide-react', 'recharts', 'framer-motion', '@radix-ui/react-icons'],
   },
-  webpack: (config, { isServer }) => {
-    // Fix for the webpack error
-    config.infrastructureLogging = {
-      level: 'error',
+  staticPageGenerationTimeout: 1000,
+  webpack: (config, { dev }) => {
+    config.infrastructureLogging = { level: 'error' }
+    
+    if (!dev) {
+      // Re-enabled optimizations now that the infinite loop is fixed.
+      config.optimization.minimize = true
+      config.optimization.concatenateModules = true
+      config.cache = false
     }
-    
-    // Optimize bundle size
-    config.optimization.moduleIds = 'deterministic'
-    
-    // Add transpilation for framer-motion
-    config.module.rules.push({
-      test: /node_modules\/framer-motion/,
-      sideEffects: false
-    });
-    
     return config
   },
 }

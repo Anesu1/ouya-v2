@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+export const revalidate = 86400
 
 import { sanityClient } from "@/lib/sanity"
 import type { Metadata } from "next"

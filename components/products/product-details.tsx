@@ -23,6 +23,26 @@ import { motion, AnimatePresence } from "framer-motion"
 import FragranceNotes from "@/components/products/fragrance-notes"
 import { PortableText } from "@portabletext/react"
 
+function addBusinessDays(date: Date, days: number): Date {
+  const result = new Date(date)
+  let added = 0
+  while (added < days) {
+    result.setDate(result.getDate() + 1)
+    const day = result.getDay()
+    if (day !== 0 && day !== 6) added++
+  }
+  return result
+}
+
+function formatDeliveryRange(): string {
+  const today = new Date()
+  const earliest = addBusinessDays(today, 3)
+  const latest = addBusinessDays(today, 5)
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-GB", { month: "short", day: "numeric" })
+  return `Free delivery by ${fmt(earliest)} - ${fmt(latest)}`
+}
+
 export default function ProductDetails({ product }: { product: any }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(
@@ -465,7 +485,7 @@ export default function ProductDetails({ product }: { product: any }) {
               <Truck className="h-5 w-5 text-gray-500 mr-3" />
               <div>
                 <p className="text-sm font-medium">
-                  {product.deliveryMessage || "Free delivery by Apr 16 - Apr 17"}
+                  {product.deliveryMessage || formatDeliveryRange()}
                 </p>
                 <p className="text-xs text-gray-500">{product.deliverySubtext || "Express delivery available"}</p>
               </div>
